@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ВАЛЮТЫ</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal">
+                    <fieldset>
+
+                        <!-- Form Name -->
+                        <legend>ВАЛЮТЫ</legend>
+
+                        <!-- Select Multiple -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="currency">ВАЛЮТЫ</label>
+                            <div class="col-md-4">
+                                <select id="currency" name="base" class="form-control" multiple="multiple">
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Button -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="singlebutton"></label>
+                            <div class="col-md-4">
+                                <button id="single_button" name="singlebutton" class="btn btn-primary">ВПЕРЕД</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+                <table class="table">
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        $(function () {
+            var onSuccess = function (data) {
+                console.log(data.rates);
+                $("#currency").html("");
+                $("table tbody").html("");
+
+                for (var rate in data.rates) {
+                    $("#currency").append("<option value='" + rate + "'>" + rate + "</option>");
+                    $("table").append("<tr><td></td><td>" + rate + "</td><td>" + data.rates[rate] + "</td>")
+                }
+            };
+
+            var getRates = function () {
+                $.ajax({
+                    url: "http://api.fixer.io/latest",
+                    success: onSuccess,
+                    data: $("form").serialize()
+                });
+            };
+
+            $("button").click(function (event) {
+                event.preventDefault();
+                getRates();
+            });
+            getRates();
+        });
+    </script>
+</body>
+
+</html>
